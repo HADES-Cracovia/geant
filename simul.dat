@@ -1,0 +1,73 @@
+! GEANT key words
+!
+PMCF 1
+AUTO 1
+KINE 1 0. 0. 0. 0. 500.0 500.0 18.0 0. 0. 0.
+FMAP 2
+FPOL 0
+MXST 25000
+JVER 0 0 0
+BEAM 1. 2. 1000. 0. 0. 0.
+SECO 3 0
+CKOV 0
+LOSS 1
+DRAY 0
+TRIG 10000
+ETA  37.30 30.20 21.00 4.75 6.0 7.1e-2
+SWIT 0 0 0 0 0 1 0 0 0
+TIME 0 1000000 1000000
+SPLIT 1800000000
+FILE 1
+RNDM 123 456
+END
+//
+// ******************************************************************
+//
+//
+// geometry for testing, ideal geometry, with EMC and FwDet
+// includes new rich medium C4F10_2012$ from Tobias Kunz
+//
+DbSupport:     OFF
+SimulRefRunId: 0
+//ParameterFile: /hera/hades/user/jbiernat/HADES_FD/FwDet/geom/emc_gpar.root
+//
+fwdet_files/media_12500_with_straw_tube.geo
+geom12500/cave_301115114503.geo
+geom12500/rich_220116.geo
+geom12500/target_301115114503.geo
+geom12500/sect_301115114503.geo
+geom12500/mdc_301115114503.geo
+geom12500/coils_301115114503.geo
+geom12500/tof_301115114503.geo
+geom12500/rpc_301115114503.geo
+geom12500/emc_301115114503.geo
+geom12500/start_301115114503.geo
+geom12500/wall_301115114503.geo
+fwdet_files/frames_12500_no_he_bag.geo
+fwdet_files/fwdet.geo
+//
+geom12500/rich_301115114503.hit
+geom12500/mdc_301115114503.hit
+geom12500/tof_301115114503.hit
+geom12500/rpc_301115114503.hit
+geom12500/emc_301115114503.hit
+geom12500/start_301115114503.hit
+geom12500/wall_301115114503.hit
+fwdet_files/fwdet.hit
+//
+geom12500/fldrpz_unf.map
+//
+kine.tup
+rich.tup
+mdc.tup
+tof.tup
+rpc.tup
+emc.tup
+start.tup
+wall.tup
+fwdet.tup
+//
+// Input and output file placeholders
+//
+@input@
+@output@
