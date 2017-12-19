@@ -17,7 +17,7 @@ def_mem = "500mb"
 def_script='job_script.sh'
 
 parser=argparse.ArgumentParser(description='Submit dst analysis to GSI batch farm')
-parser.add_argument('arguments', help='list of arguments',type=str)
+parser.add_argument('arguments', help='list of arguments', type=str, nargs='+')
 parser.add_argument('-p', '--part', help='partition', type=str, default="main")
 parser.add_argument('-f', '--file', help='input is single file', action='store_true', default=False)
 parser.add_argument('-e', '--events', help='number of events per file to be processed',type=int, default=10000)
@@ -42,41 +42,43 @@ if __name__=="__main__":
     resources = tpl_resources.format(int(args.time/60), args.time % 60, args.mem)
     lines = []
 
-    if args.file is False:
-        f = open(args.arguments)
-        lines = f.readlines()
-        f.close()
-    else:
-        lines.append(args.arguments)
+    for arg in args.arguments:
 
-    for entry in lines:
-        entry = entry.strip()
-        print entry
-
-        i += 1
-        if NFILES!=-1: 
-            perc=float(i)/NFILES * 100
+        if args.file is False:
+            f = open(arg)
+            lines = f.readlines()
+            f.close()
         else:
-            perc=float(i)/len(lines) * 100
+            lines.append(arg)
 
-        if i%1000 == 0 or i==1:
-            print '{0:8d} ({1:6.2f}%)'.format(i,perc)
+        for entry in lines:
+            entry = entry.strip()
+            print entry
 
-        logfile = submissiondir + '/log/slurm-%j.log'
+            i += 1
+            if NFILES!=-1:
+                perc=float(i)/NFILES * 100
+            else:
+                perc=float(i)/len(lines) * 100
 
-        events = args.events
+            if i%1000 == 0 or i==1:
+                print '{0:8d} ({1:6.2f}%)'.format(i,perc)
 
-        print 'submitting file: ',entry
+            logfile = submissiondir + '/log/slurm-%j.log'
 
-        if os.path.isfile(logfile):
-            os.remove(logfile)
+            events = args.events
 
-        command = "-o {:s} {:s} -J {:s} --export=\"pattern={:s},events={:d},odir={:s}\" {:s}".format(logfile, resources, os.path.split(entry)[1], entry, events, args.directory, jobscript)
-        qsub_command='sbatch ' + command
-        print qsub_command
-        os.system(qsub_command)
+            print 'submitting file: ',entry
 
-        if NFILES==i:
-            break
-    print i, ' entries submitted'
-    print 'last submitted entry: ',entry
+            if os.path.isfile(logfile):
+                os.remove(logfile)
+
+            command = "-o {:s} {:s} -J {:s} --export=\"pattern={:s},events={:d},odir={:s}\" {:s}".format(logfile, resources, os.path.split(entry)[1], entry, events, args.directory, jobscript)
+            qsub_command='sbatch ' + command
+            print qsub_command
+            os.system(qsub_command)
+
+            if NFILES==i:
+                break
+        print i, ' entries submitted'
+        print 'last submitted entry: ',entry
