@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "Running job_script_p4500p.sh"
 date
 
 . /lustre/nyx/hades/user/rlalik/hades/pp45/profile.sh
@@ -12,7 +13,7 @@ root -b -q
 
 cd /lustre/nyx/hades/user/rlalik/hades/pp45/sim/geant
 
-card_file=/tmp/geaini_$(basename ${pattern} .evt).ini
+card_file=/tmp/geaini_p4500p_fwdet__$(basename ${pattern} .evt).ini
 
 date
 
@@ -20,7 +21,7 @@ date
 sed \
     -e "s|@input@|${pattern}|" \
     -e "s|@output@|${odir}/$(basename ${pattern} .evt)_.root|" \
-    simul.dat > ${card_file}
+    simul_p4500p_fwdet.dat > ${card_file}
 
 if [ -z ${HGEANT_DIR} ]; then
     time hgeant -b -c -f ${card_file}
@@ -28,4 +29,4 @@ else
     time ${HGEANT_DIR}/hgeant -b -c -f ${card_file}
 fi
 
-#rm -fv ${card_file}
+rm -fv ${card_file}

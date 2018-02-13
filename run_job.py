@@ -13,7 +13,7 @@ import os,sys,glob
 import argparse
 
 def_time = 120
-def_mem = "500mb"
+def_mem = "900mb"
 def_script='job_script.sh'
 
 parser=argparse.ArgumentParser(description='Submit dst analysis to GSI batch farm')
@@ -34,7 +34,7 @@ NFILES = args.files
 
 submissiondir=os.getcwd()+'/'
 tpl_resources='--time={0:1d}:{1:02d}:00 --mem-per-cpu={2:s} -p main'
-jobscript=submissiondir+'job_script.sh'
+jobscript=submissiondir+args.script
 
 if __name__=="__main__":
     i=0
